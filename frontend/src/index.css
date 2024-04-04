@@ -3,7 +3,7 @@
 
 /* layout */
 :root {
-  --primary: #1aac83;
+  --primary: #2c41c9;
   --error: #e7195a;
 }
 body {
@@ -61,10 +61,14 @@ header a {
   top: 20px;
   right: 20px;
   cursor: pointer;
-  background: #f1f1f1;
+  background: #FF605D;
   padding: 6px;
   border-radius: 50%;
-  color: #333;
+  color: white;
+  height: 11px;
+  width: 12px;
+  text-align: center;
+  line-height: 10px;
 }
 
 /* new workout form */
