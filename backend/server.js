@@ -2,10 +2,11 @@ const express = require('express');
 require('dotenv').config();
 const bodyParser = require('body-parser');
 const app = express();
-const Router = require("./routes/workout");
+const workoutRoutes = require("./routes/workout");
+const userRoutes = require("./routes/user");
 const PORT = process.env.PORT;
 const mongoose = require('mongoose')
-
+const requireAuth = require('./middleware/requireAuth')
 
 //body-parser for post new product 
 app.use(bodyParser.urlencoded({extended:false}))
@@ -18,7 +19,6 @@ app.use((req,res,next)=>{
 //connect to db
 mongoose.connect(process.env.MONGO_URI).then(()=>{
     app.listen(PORT,()=>{
-app.use('/api/v1/products',Router)
         console.log(`wow server listning http://localhost:${PORT}/api/v1/products`);
     })
 
@@ -27,7 +27,9 @@ app.use('/api/v1/products',Router)
 })
 
 //routes
-app.use('/api/workouts',Router)
+app.use('/api/workouts',workoutRoutes)
+app.use('/api/user',userRoutes)
+
 
 
 

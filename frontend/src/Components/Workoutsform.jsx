@@ -1,41 +1,70 @@
 import { useState } from 'react'
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const WorkoutForm = () => {
   const { dispatch } = useWorkoutsContext()
+  const {user}=useAuthContext()
 
   const [title, setTitle] = useState('')
   const [load, setLoad] = useState('')
   const [reps, setReps] = useState('')
   const [error, setError] = useState(null)
-  const [emptyFields, SetEmptyFields] = useState([])
+  const [emptyFields, setEmptyFields] = useState([])
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    const workout = {title, load, reps}
-    
-    const response = await fetch('/api/workouts', {
-      method: 'POST',
-      body: JSON.stringify(workout),
-      headers: {
-        'Content-Type': 'application/json'
+    e.preventDefault();
+  
+    if (!user) {
+      setError('You must be logged in');
+      return;
+    }
+  
+    const workout = { title, load, reps };
+  
+    try {
+      const response = await fetch('/api/workouts', {
+        method: 'POST',
+        body: JSON.stringify(workout),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+  
+      const json = await response.json();
+  
+      if (!response.ok) {
+        if (response.status === 401) {
+          // Unauthorized error
+          setError('Unauthorized. Please log in again.');
+         
+        } else {
+          // Other error
+          setError(json.error || 'Something went wrong.');
+        }
+        if (json.emptyFields) {
+          // Handle empty fields separately
+          setEmptyFields(json.emptyFields);
+        } else {
+          setEmptyFields([]);
+        }
+      } else {
+        // Successful response
+        setError(null);
+        setTitle('');
+        setLoad('');
+        setReps('');
+        dispatch({ type: 'CREATE_WORKOUT', payload: json });
       }
-    })
-    const json = await response.json()
-
-    if (!response.ok) {
-      setError(json.error)
-      SetEmptyFields(json.emptyFields);
+    } catch (error) {
+      // Network or other errors
+      console.error('Error submitting workout:', error);
+      setError('Something went wrong. Please try again later.');
+      setEmptyFields([]);
     }
-    if (response.ok) {
-     SetEmptyFields([])
-      setError(null)
-      setTitle('')
-      setLoad('')
-      setReps('')
-      dispatch({type: 'CREATE_WORKOUT', payload: json})
-    }
+  
+  
 
   }
 
