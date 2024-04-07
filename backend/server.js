@@ -8,10 +8,6 @@ const PORT = process.env.PORT;
 const mongoose = require('mongoose')
 const requireAuth = require('./middleware/requireAuth')
 
-// Initialize Firebase
-const apps = initializeApp(firebaseConfig);
-const analytics = getAnalytics(apps);
-// Note: This option uses the modular JavaScript SDK
 
 //body-parser for post new product 
 app.use(bodyParser.urlencoded({extended:false}))
