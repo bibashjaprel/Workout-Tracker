@@ -20,7 +20,7 @@ app.use((req,res,next)=>{
 //connect to db
 mongoose.connect(process.env.MONGO_URI).then(()=>{
     app.listen(PORT,()=>{
-        console.log(`wow server listning http://localhost:${PORT}/api/v1/products`);
+        console.log(`wow server listning http://localhost:${PORT}/api/workouts`);
     })
 
 }).catch((err)=>{
