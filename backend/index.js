@@ -8,6 +8,10 @@ const PORT = process.env.PORT;
 const mongoose = require('mongoose')
 const requireAuth = require('./middleware/requireAuth')
 
+
+
+
+
 //body-parser for post new product 
 app.use(bodyParser.urlencoded({extended:false}))
 //middleware
