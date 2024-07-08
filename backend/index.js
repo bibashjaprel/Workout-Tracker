@@ -6,13 +6,7 @@ const workoutRoutes = require("./routes/workout");
 const userRoutes = require("./routes/user");
 const requireAuth = require('./middleware/requireAuth');
 const connectDb = require('./dbconfig/connectdb');
-
 connectDb();
-
-
-
-
-
 //body-parser for post new product 
 app.use(bodyParser.urlencoded({extended:false}))
 //middleware
@@ -21,7 +15,6 @@ app.use((req,res,next)=>{
     console.log(req.path,req.method);
     next()
 })
-
 
 //routes
 app.use('/api/workouts',workoutRoutes)
