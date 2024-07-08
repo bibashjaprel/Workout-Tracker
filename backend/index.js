@@ -4,9 +4,10 @@ const bodyParser = require('body-parser');
 const app = express();
 const workoutRoutes = require("./routes/workout");
 const userRoutes = require("./routes/user");
-const PORT = process.env.PORT;
-const mongoose = require('mongoose')
-const requireAuth = require('./middleware/requireAuth')
+const requireAuth = require('./middleware/requireAuth');
+const connectDb = require('./dbconfig/connectdb');
+
+connectDb();
 
 
 
@@ -20,15 +21,7 @@ app.use((req,res,next)=>{
     console.log(req.path,req.method);
     next()
 })
-//connect to db
-mongoose.connect(process.env.MONGO_URI).then(()=>{
-    app.listen(PORT,()=>{
-        console.log(`wow server listning http://localhost:${PORT}/api/workouts`);
-    })
 
-}).catch((err)=>{
-    console.log(err)
-})
 
 //routes
 app.use('/api/workouts',workoutRoutes)
